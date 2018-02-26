@@ -1,12 +1,21 @@
 (ns map-creator.core
   (:gen-class))
 
+(load "./rules")
+
 (def DIRECTIONS [
                  {
-                  :name "up" :chance 1.1 :move { :x 0 :y -1 }}
+                  :name "up" :chance 1.1 :move #(update % :y dec)}
                  {
-                  :name "left" :chance 1 :move {:x -1 :y 0}}
+                  :name "left" :chance 1 :move #(update % :x dec)}
+                 {
+                  :name "right" :chance 1 :move #(update % :x inc)}
+                 {
+                  :name "down" :chance 1 :move #(update % :y inc)}
                  ])
+
+(defn applyRules [direction] 
+  direction)
 
 (defn blankGameMap
   [{:keys [x y] :as dimensions}]
@@ -14,33 +23,38 @@
   (vectorOf y (vectorOf x 0)))
 
 (defn modifyChance
-  [chance]
+  [direction gameMap]
   (def modifier (rand-int 100))
-  (* modifier chance))
 
-(defn getDirection
-  []
+  ;; (def rulesModifier (map #(% direction gameMap) 
+  ;;                         (get RULES_DICT (keyword (get direction :name)))))
+  (def rulesModifier (->> (select-keys RULES_DICT [(keyword (get direction :name)) :all])
+                          (vals)
+                          (flatten)
+                          (into [])
+                          (reduce #(* %1 (%2 {:direction direction :gameMap gameMap})) 1)))
+  
+  (applyRules [direction])
+  (update-in direction [:chance] #(* modifier %)))
+
+(defn getDirection [gameMap]
   (def dirDict 
-    (into [] (map #(update-in % [:chance] 
-                              modifyChance) DIRECTIONS)))
+    (into [] (map modifyChance DIRECTIONS gameMap)))
   (apply max-key :chance dirDict))
 
 (defn move
-  [{:keys [x, y] :as curLoc}]
-  (def direction (get (getDirection) :name))
-  (println curLoc)
-  (case direction
-    "up" (update curLoc :y dec)
-    "left" (update curLoc :x dec)
-    "default")
+  [{:keys [x, y] :as curLoc} gameMap]
+  (def direction (getDirection gameMap))
+  ((get direction :move) curLoc)
   )
 
 (defn createPath
   [{:keys [x, y] :as initialLoc}, initialGameMap]
   (loop [iteration 0 curLoc initialLoc curGameMap initialGameMap]
     (def newGameMap (update-in curGameMap [(get curLoc :y)] #(assoc % (get curLoc :x) 1)))
-    (def newLoc (move curLoc))
-    (if (or (< (get newLoc :y) 0) (< (get newLoc :x) 0))
+    (def newLoc (move curLoc newGameMap))
+    ;; (println newLoc)
+    (if (or (> iteration 100) (< (get newLoc :y) 0) (< (get newLoc :x) 0))
       curGameMap
       (recur (inc iteration) newLoc newGameMap)))
   )
@@ -49,4 +63,3 @@
   [& args]
   (def initialGameMap (blankGameMap {:x 10 :y 10}))
   (run! println (createPath {:x 9 :y 9} initialGameMap)))
-

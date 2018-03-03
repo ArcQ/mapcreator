@@ -23,28 +23,27 @@
   (vectorOf y (vectorOf x 0)))
 
 (defn modifyChance
-  [direction gameMap]
-  (def modifier (rand-int 100))
-
+  [direction gameMap curLoc]
   ;; (def rulesModifier (map #(% direction gameMap) 
   ;;                         (get RULES_DICT (keyword (get direction :name)))))
   (def rulesModifier (->> (select-keys RULES_DICT [(keyword (get direction :name)) :all])
                           (vals)
                           (flatten)
                           (into [])
-                          (reduce #(* %1 (%2 {:direction direction :gameMap gameMap})) 1)))
-  
+                          (reduce #(* %1 (%2 {:direction direction :gameMap gameMap :curLoc curLoc})) 1)))
+  (def modifier (* (rand-int 100) rulesModifier))
+
   (applyRules [direction])
   (update-in direction [:chance] #(* modifier %)))
 
-(defn getDirection [gameMap]
+(defn getDirection [gameMap curLoc]
   (def dirDict 
-    (into [] (map modifyChance DIRECTIONS gameMap)))
+    (into [] (map #(modifyChance % gameMap curLoc) DIRECTIONS)))
   (apply max-key :chance dirDict))
 
 (defn move
   [{:keys [x, y] :as curLoc} gameMap]
-  (def direction (getDirection gameMap))
+  (def direction (getDirection gameMap curLoc))
   ((get direction :move) curLoc)
   )
 
@@ -53,7 +52,6 @@
   (loop [iteration 0 curLoc initialLoc curGameMap initialGameMap]
     (def newGameMap (update-in curGameMap [(get curLoc :y)] #(assoc % (get curLoc :x) 1)))
     (def newLoc (move curLoc newGameMap))
-    ;; (println newLoc)
     (if (or (> iteration 100) (< (get newLoc :y) 0) (< (get newLoc :x) 0))
       curGameMap
       (recur (inc iteration) newLoc newGameMap)))

@@ -4,7 +4,15 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.8.0"]]
-  :plugins [[lein-auto "0.1.3"]]
+  :plugins []
   :main ^:skip-aot map-creator.core
   :target-path "target/%s"
-  :profiles {:uberjar {:aot :all}})
+  :profiles {
+             :uberjar {:aot :all}
+             :dev {:main user
+                   :source-paths ["dev"]
+                   :dependencies [
+                                  [org.clojure/tools.namespace "0.2.3"]
+                                  [org.clojure/java.classpath "0.2.0"]
+                                  ]}
+             })

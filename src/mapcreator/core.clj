@@ -1,6 +1,5 @@
-(ns map-creator.core
-  (:gen-class)
-  (:require [ map-creator.builder.core :as builder :refer :all])
+(ns mapcreator.core
+  (:require [ mapcreator.builder.core :as builder ])
   )
 
 (use 'debugger.core)

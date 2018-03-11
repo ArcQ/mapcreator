@@ -1,6 +1,4 @@
-(ns map-creator.builder.rules
-  (:gen-class)
-  )
+(ns mapcreator.builder.ruleDict)
 
 (load "./directions")
 
@@ -36,7 +34,7 @@
     1)
   )
 
-(def RULES_DICT { 
+(def RULE_DICT { 
                  :up []
                  :left []
                  :right []

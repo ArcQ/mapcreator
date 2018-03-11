@@ -1,5 +1,10 @@
-(load "./builder/directions")
-(load "./builder/rules")
+(ns map-creator.builder.core
+  (:gen-class)
+  (:require [ map-creator.builder.rules :as rules :refer :all])
+  )
+
+(load "./directions")
+(load "./rules")
 
 (defn applyRules [direction] 
   direction)
@@ -12,7 +17,7 @@
 (defn modifyChance
   [direction gameMap curLoc]
   (def modifier (* (+ (rand-int 90) 10)
-                   (->> (select-keys RULES_DICT [(keyword (:name direction)) :all])
+                   (->> (select-keys rules/RULES_DICT [(keyword (:name direction)) :all])
                         (vals)
                         (flatten)
                         (into [])

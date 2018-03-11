@@ -1,3 +1,9 @@
+(ns map-creator.builder.rules
+  (:gen-class)
+  )
+
+(load "./directions")
+
 (defn getSuroundings [gameMap curLoc] 
   (map DIRECTIONS #())
   []

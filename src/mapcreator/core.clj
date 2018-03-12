@@ -1,6 +1,5 @@
 (ns mapcreator.core
-  (:require [ mapcreator.builder.core :as builder ])
-  )
+  (:require [mapcreator.builder.core :as builder]))
 
 (use 'debugger.core)
 
@@ -10,5 +9,4 @@
             [& args]
             (def initialGameMap (builder/blankGameMap {:x 9 :y 9}))
             (run! println (builder/createPath {:x 8 :y 8} initialGameMap)))
-   :stop (fn stop [] )}
-  )
+   :stop (fn stop [])})

@@ -7,7 +7,7 @@
       (get (:y loc))
       (get  (:x loc))))
 
-(defn getSuroundings [gameMap curLoc]
+(defn getSurroundings [gameMap curLoc]
   (reduce
    #(assoc %1
            (keyword (:name %2))

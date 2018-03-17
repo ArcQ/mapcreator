@@ -17,7 +17,7 @@
    {} DIRECTIONS))
 
 (defn bounds [{:keys [direction gameMap curLoc]}]
-  (def gameMapSize {:x (count (get gameMap 0)) :y (count gameMap)})
+  (def gameMapSize {:x (count (gameMap 0)) :y (count gameMap)})
   (def nextLoc ((:move direction) curLoc))
   (if (or
        (> (:x nextLoc) (- (:x gameMapSize) 1))
@@ -35,7 +35,7 @@
 
 (defn noTouchingPaths [{:keys [direction gameMap curLoc]}]
   (def nextLoc ((:move direction) curLoc))
-  (if (= (get-in gameMap [(:y nextLoc) (:x nextLoc)]) 1)
+  (if (> (reduce + (remove nil? (vals (getSurroundings gameMap nextLoc)))) 1)
     0
     1))
 
@@ -43,4 +43,4 @@
                 :left []
                 :right []
                 :down []
-                :all [bounds noBack]})
+                :all [bounds noBack noTouchingPaths]})

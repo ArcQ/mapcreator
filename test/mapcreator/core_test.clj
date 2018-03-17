@@ -8,7 +8,7 @@
 (def middleLoc {:x 1 :y 1})
 
 (deftest getSurroundings-test
-  (testing "returns type vector"
+  (testing "has start and stop functions"
     (is (and
          (fn? (:stop (core/system)))
          (fn? (:start (core/system)))))))

@@ -1,11 +1,7 @@
 (ns mapcreator.builder.ruleDict)
 
 (load "./directions")
-
-(defn getLocVal [gameMap loc]
-  (-> gameMap
-      (get (:y loc))
-      (get  (:x loc))))
+(load "./utils")
 
 (defn getSurroundings [gameMap curLoc]
   (reduce
@@ -17,7 +13,7 @@
    {} DIRECTIONS))
 
 (defn bounds [{:keys [direction gameMap curLoc]}]
-  (def gameMapSize {:x (count (gameMap 0)) :y (count gameMap)})
+  (def gameMapSize (getBounds gameMap))
   (def nextLoc ((:move direction) curLoc))
   (if (or
        (> (:x nextLoc) (- (:x gameMapSize) 1))
@@ -29,7 +25,7 @@
 
 (defn noBack [{:keys [direction gameMap curLoc]}]
   (def nextLoc ((:move direction) curLoc))
-  (if (= (get-in gameMap [(:y nextLoc) (:x nextLoc)]) 1)
+  (if (> (get-in gameMap [(:y nextLoc) (:x nextLoc)]) 0)
     0
     1))
 

@@ -6,11 +6,12 @@
                      [1 0 0]
                      [0 1 0]])
 
-(def testGameMapTwo [[0 1 0 0 1]
-                     [1 0 0 0 1]
-                     [0 1 0 0 1]
-                     [0 0 0 0 1]
-                     [0 0 0 0 1]])
+(def testGameMapTwo [[0 1 0 0 1 0]
+                     [1 0 0 0 1 0]
+                     [0 1 0 0 1 0]
+                     [0 0 0 0 1 0]
+                     [0 0 0 0 1 0]
+                     [0 1 0 0 1 0]])
 
 (def startingLocOne {:x 2 :y 2})
 (def startingLocTwo {:x 1 :y 1})

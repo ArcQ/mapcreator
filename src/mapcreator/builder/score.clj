@@ -18,7 +18,12 @@
                                                                  :sw {:xQuad 0 :yQuad 1}}))
 
 (defn getRatio [gameMap]
-  (/ (reduce + (flatten gameMap)) (reduce * (vals (getBounds gameMap)))))
+  (/ (sumMap gameMap) (reduce * (vals (getBounds gameMap)))))
 
-(defn passCriteria []
+(defn noEmptyQuadrants [gameMap]
+  (->> (vals (getQuadrants gameMap))
+       (map #(sumMap %))
+       (reduce #(and %1 (>= %2 3)) true)))
+
+(defn passCriteria [{:keys [minRatio, minPerQuadrant]}]
   false)

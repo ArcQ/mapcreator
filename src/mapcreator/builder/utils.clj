@@ -5,3 +5,6 @@
 
 (defn getBounds [gameMap]
   {:x (count (gameMap 0)) :y (count gameMap)})
+
+(defn sumMap [gameMap]
+  (reduce + (flatten gameMap)))

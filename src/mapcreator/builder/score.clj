@@ -20,10 +20,21 @@
 (defn getRatio [gameMap]
   (/ (sumMap gameMap) (reduce * (vals (getBounds gameMap)))))
 
-(defn noEmptyQuadrants [gameMap]
+(defn noLowRatio [gameMap criteria]
+  (> (getRatio gameMap) criteria))
+
+(defn getQuadArea [gameMap]
+  (/ (reduce * (vals (getBounds gameMap))) 2) 2)
+
+(defn noEmptyQuadrants [gameMap criteria]
   (->> (vals (getQuadrants gameMap))
        (map #(sumMap %))
-       (reduce #(and %1 (>= %2 3)) true)))
+       (reduce #(and %1 (>= %2 (* criteria (getQuadArea gameMap)))) true)))
 
-(defn passCriteria [{:keys [minRatio, minPerQuadrant]}]
-  false)
+(defn callFn [^String funcStr & args]
+  (apply (ns-resolve 'mapcreator.builder.score (symbol funcStr)) args))
+
+(defn passCriteria [gameMap criteriaDict]
+  (reduce
+   #(and %1 (callFn (name (%2 0)) gameMap (%2 1)))
+   true criteriaDict))

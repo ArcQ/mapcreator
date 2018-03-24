@@ -1,8 +1,8 @@
-(ns mapcreator.builder.score)
-(load "./utils")
+(ns mapcreator.builder.score
+  (:require [mapcreator.builder.shared.utils :as utils]))
 
 (defn getSubQuadrant [quadDict gameMap]
-  (-> (getBounds gameMap)
+  (-> (utils/getBounds gameMap)
       (#(assoc % :xBound (/ (:x %) 2) :yBound (/ (:y %) 2)))
       (#(as->
          (partition (:yBound %) gameMap) v
@@ -18,17 +18,17 @@
                                                                  :sw {:xQuad 0 :yQuad 1}}))
 
 (defn getRatio [gameMap]
-  (/ (sumMap gameMap) (reduce * (vals (getBounds gameMap)))))
+  (/ (utils/sumMap gameMap) (reduce * (vals (utils/getBounds gameMap)))))
 
 (defn noLowRatio [gameMap criteria]
   (> (getRatio gameMap) criteria))
 
 (defn getQuadArea [gameMap]
-  (/ (reduce * (vals (getBounds gameMap))) 2) 2)
+  (/ (reduce * (vals (utils/getBounds gameMap))) 2) 2)
 
 (defn noEmptyQuadrants [gameMap criteria]
   (->> (vals (getQuadrants gameMap))
-       (map #(sumMap %))
+       (map #(utils/sumMap %))
        (reduce #(and %1 (>= %2 (* criteria (getQuadArea gameMap)))) true)))
 
 (defn callFn [^String funcStr & args]

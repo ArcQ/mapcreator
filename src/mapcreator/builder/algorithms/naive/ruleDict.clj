@@ -1,4 +1,4 @@
-(load "./directions")
+(load "../directions")
 
 (defn getSurroundings [gameMap curLoc]
   (reduce

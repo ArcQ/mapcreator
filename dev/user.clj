@@ -1,7 +1,7 @@
 (ns user
-  (:require 
-    [clojure.tools.namespace.repl :refer (refresh refresh-all)]
-    [mapcreator.core :as system]))
+  (:require
+   [clojure.tools.namespace.repl :refer (refresh refresh-all)]
+   [mapcreator.core :as system]))
 
 ;; http://thinkrelevance.com/blog/2013/06/04/clojure-workflow-reloaded
 
@@ -29,7 +29,6 @@
   []
   (init)
   (start))
-
 
 (defn -main
   [& args]

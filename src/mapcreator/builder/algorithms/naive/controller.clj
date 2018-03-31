@@ -1,7 +1,7 @@
 (ns mapcreator.builder.algorithms.naive.controller
   (:require [mapcreator.builder.shared.utils :as utils]))
 
-(load "./directions")
+(load "../directions")
 (load "./ruleDict")
 
 (defn applyRules [direction]

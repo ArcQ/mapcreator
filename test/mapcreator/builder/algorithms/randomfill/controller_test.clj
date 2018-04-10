@@ -30,7 +30,7 @@
 
 (deftest unionConnectedSets-test
   (testing "should group getAdjacentSets into groups of points that are connected together"
-    (is (= [#{0 1 4 8} #{10 11}] (controller/unionConnectedSets testGameMapThree)))))
+    (is (= [#{0 1 4 8} #{10 11}] (controller/unionConnectedSets [#{0 1} #{0 4} #{4 8} #{10 11}])))))
 
 (deftest isConnected-test
   (testing "given the sets found in unionConnectedSets, should return true if connected"

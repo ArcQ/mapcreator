@@ -1,5 +1,6 @@
 (ns mapcreator.builder.algorithms.randomfill.controller
-  (:require [mapcreator.builder.shared.utils :as utils]))
+  (:require [mapcreator.builder.shared.utils :as utils])
+  (:require [clojure.set :as set]))
 
 (load "../directions")
 
@@ -45,6 +46,25 @@
        (remove nil?)
        (vec)))
 
-(defn unionConnectedSets [adjacentSets])
+(defn hasCommon [hashSetOne hashSetTwo]
+  (>
+   (+ (count hashSetOne) (count hashSetTwo))
+   (count (set/union hashSetOne hashSetTwo))))
+
+;; (defn unionConnectedSet [hashedIdList nextHash]
+;;   (loop [i 0]
+;;     (if (hasCommon nextHash (hashedIdList i))
+;;       (set/union nextHash (hashedIdList i))
+;;       (recur (inc i)))))
+
+(defn unionConnectedSet [newHashIdList nextHash]
+  (loop [i 0]
+    (cond
+      (>= i (count newHashIdList)) (conj newHashIdList nextHash)
+      (hasCommon nextHash (newHashIdList i)) (assoc newHashIdList i (set/union nextHash (newHashIdList i)))
+      :else (recur (inc i)))))
+
+(defn unionConnectedSets [adjacentSets]
+  (reduce #(unionConnectedSet %1 %2) [(adjacentSets 0)] (drop 1 adjacentSets)))
 
 (defn isConnected [connectedSets])

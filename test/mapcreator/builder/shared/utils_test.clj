@@ -37,7 +37,7 @@
 
 (deftest hashedList-test
   (testing "given gameMap should return a list of all hashed locations"
-    (is (= [0 1 2 3 4 5 6 7 8] (utils/hashFunc testGameMapOne)))))
+    (is (= [0 1 2 3 4 5 6 7 8] (utils/hashList testGameMapOne)))))
 
 (deftest reverseHashFunc-test
   (testing "given a hashed id and a gameMap, should be able to calculate the position at that point"

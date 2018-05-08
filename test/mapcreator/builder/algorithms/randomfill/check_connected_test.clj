@@ -17,6 +17,15 @@
                        [0 1 1 1]
                        [0 1 0 0]])
 
+(def testGameMapFour [[1 0 1 0 1 0 1 0 1]
+                      [0 0 0 0 0 1 0 1 0]
+                      [0 1 1 1 1 1 0 0 0]
+                      [0 1 1 1 1 1 1 1 1]
+                      [1 1 1 0 1 1 0 1 1]
+                      [1 0 0 0 1 1 1 1 1]
+                      [1 1 1 0 0 1 1 1 0]
+                      [1 1 0 1 1 1 1 0 0]])
+
 (deftest notFirstColumn-test
   (testing "returns false if in firstColumn of game map"
     (is (= false (checkConnected/notFirstColumn 0 testGameMapOne)))
@@ -38,4 +47,6 @@
   (testing "given the sets found in unionConnectedSets, should return false if one of them was a wall"
     (is (= false (checkConnected/isConnected testGameMapThree 4 5))))
   (testing "given the sets found in unionConnectedSets, should return false if not connected"
-    (is (= false (checkConnected/isConnected testGameMapThree 0 11)))))
+    (is (= false (checkConnected/isConnected testGameMapThree 0 11))))
+  (testing "given the sets found in unionConnectedSets, should return false if not connected"
+    (is (= false (checkConnected/isConnected testGameMapFour 0 79)))))

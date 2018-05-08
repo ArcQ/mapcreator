@@ -18,6 +18,13 @@
    (* (:y curLoc) (:y (getBounds gameMap)))
    (:x curLoc)))
 
+(defn hashFuncMap [gameMap]
+  (let [width (:x (getBounds gameMap))
+        height (:y (getBounds gameMap))]
+    (map
+     (fn [y] (range (* y height) (+ width (* y height))))
+     (range height))))
+
 (defn hashList [gameMap]
   (take
    (* (count gameMap) (count (gameMap 0)))
@@ -33,3 +40,7 @@
 (defn getLocValFromHash [hashId, gameMap]
   ((gameMap (int (/ hashId (:x (getBounds gameMap)))))
    (mod hashId (:x (getBounds gameMap)))))
+
+(defn updateElement [gameMap {:keys [x y]} newVal]
+  (update-in gameMap [x y]
+             (constantly newVal)))

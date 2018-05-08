@@ -26,17 +26,17 @@
           (getBelow hashId gameMap)]
          ((fn [[rightId belowId]]
             (concat
-              []
-              (if (and
-                    (notFirstColumn rightId gameMap)
-                    (= (utils/getLocValFromHash rightId gameMap) 0))
-                [#{hashId rightId}]
-                nil)
-              (if (and
-                    (<=  belowId (utils/maxHash gameMap))
-                    (= (utils/getLocValFromHash belowId gameMap) 0))
-                [#{hashId belowId}]
-                nil)))))))
+             []
+             (if (and
+                  (notFirstColumn rightId gameMap)
+                  (= (utils/getLocValFromHash rightId gameMap) 0))
+               [#{hashId rightId}]
+               nil)
+             (if (and
+                  (<=  belowId (utils/maxHash gameMap))
+                  (= (utils/getLocValFromHash belowId gameMap) 0))
+               [#{hashId belowId}]
+               nil)))))))
 
 (defn getAdjacentSets [gameMap]
   (->> gameMap
@@ -62,11 +62,11 @@
   (reduce #(unionConnectedSet %1 %2) [(adjacentSets 0)] (drop 1 adjacentSets)))
 
 (defn isConnected [gameMap, hashedIdOne, hashedIdTwo]
-  (def connectedSets (-> gameMap
-                         getAdjacentSets
-                         unionConnectedSets))
-  (->> connectedSets
-       (reduce #(or %1
-                   (and (contains? %2 hashedIdOne)
-                     (contains? %2 hashedIdTwo))) 
-               false)))
+  (let [connectedSets (-> gameMap
+                          getAdjacentSets
+                          unionConnectedSets)]
+    (->> connectedSets
+         (reduce #(or %1
+                      (and (contains? %2 hashedIdOne)
+                           (contains? %2 hashedIdTwo)))
+                 false))))

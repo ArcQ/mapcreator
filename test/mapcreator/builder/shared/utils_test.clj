@@ -40,6 +40,11 @@
   (testing "given bounds, should be ab le to create hash map"
     (is (= hashFuncMapRes (utils/hashFuncMap testGameMapTwo)))))
 
+(def hashFuncMapResZeroes `((0 2 3 5) (7 8 9 11) (12 14 15 17) (18 19 20 21 23) (24 25 26 27 29) (30 32 33 35)))
+(deftest hashFuncMapZeroes-test
+  (testing "given bounds, should be ab le to create hash map"
+    (is (= hashFuncMapResZeroes (utils/hashFuncMapZeroes testGameMapTwo)))))
+
 (deftest maxHash-test
   (testing "gets maximum index of a gameMap"
     (is (= 8 (utils/maxHash testGameMapOne)))))

@@ -9,18 +9,22 @@
         hashId (x (y curHashZerosMap))]
     (utils/reverseHashFunc hashId)))
 
+(defn getRandomLoc [gameMap]
+  (let [hashMapZeroes (utils/hashFuncMapZeroes gameMap)
+        y (rand-int (count hashMapZeroes))
+        x (rand-int (count (nth hashMapZeroes y)))]
+    (-> (nth (nth hashMapZeroes y) x)
+        (utils/reverseHashFunc hashMapZeroes))))
+
 (defn createPath [initialLoc, finalLoc, initialGameMap]
   (loop [timesFailed 0
-         curGameMap initialGameMap
-         curHashZerosMap (utils/hashFuncMap initialGameMap)]
-    (if (> timesFailed 100)
+         curGameMap initialGameMap]
+    (if (> timesFailed 20)
       curGameMap
-      (let [randomLoc {:x (rand-int (:x (utils/getBounds curGameMap)))
-                       :y (rand-int (:y (utils/getBounds curGameMap)))}
-            nextGameMap (utils/updateElement curGameMap randomLoc 1)
-            nextHashMap (utils/hashFuncMap nextGameMap)]
-        (if (checkConnected/isConnected initialGameMap
+      (let [randomLoc (getRandomLoc curGameMap)
+            nextGameMap (utils/updateElement curGameMap randomLoc 1)]
+        (if (checkConnected/isConnected nextGameMap
                                         (utils/hashFunc initialLoc initialGameMap)
                                         (utils/hashFunc finalLoc initialGameMap))
-          (recur (inc timesFailed) nextGameMap nextHashMap)
-          curGameMap)))))
+          (recur 0 nextGameMap)
+          (recur (inc timesFailed) curGameMap))))))

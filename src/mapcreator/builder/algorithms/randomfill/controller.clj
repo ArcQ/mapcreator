@@ -19,7 +19,7 @@
 (defn createPath [initialLoc, finalLoc, initialGameMap]
   (loop [timesFailed 0
          curGameMap initialGameMap]
-    (if (> timesFailed 20)
+    (if (> timesFailed 5)
       curGameMap
       (let [randomLoc (getRandomLoc curGameMap)
             nextGameMap (utils/updateElement curGameMap randomLoc 1)]

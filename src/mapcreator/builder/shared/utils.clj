@@ -41,6 +41,8 @@
           row))
        (hashFuncMap gameMap)))
 
+(defn removeHashesFromHashMap [])
+
 (defn hashList [gameMap]
   (take
    (* (count gameMap) (count (gameMap 0)))

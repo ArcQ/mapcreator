@@ -61,6 +61,7 @@
 (defn unionConnectedSets [adjacentSets]
   (reduce #(unionConnectedSet %1 %2) [(adjacentSets 0)] (drop 1 adjacentSets)))
 
+;;TODO change hashIds to list of hashIds
 (defn isConnected [gameMap, hashedIdOne, hashedIdTwo]
   (let [connectedSets (-> gameMap
                           getAdjacentSets

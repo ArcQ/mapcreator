@@ -30,17 +30,17 @@
 (defn move
   [{:keys [x, y] :as curLoc} gameMap]
   (some->
-   (some-> (getDirection gameMap curLoc) (:move))
-   (#(% curLoc))))
+    (some-> (getDirection gameMap curLoc) (:move))
+    (#(% curLoc))))
 
 (defn createPath
   [{:keys [x, y] :as initialLoc}, initialGameMap]
   initialLoc = {:x (count initialGameMap), :y (count (get initialGameMap 0))}
   (loop [iteration 0 curLoc initialLoc curGameMap initialGameMap]
-    (def newGameMap (update-in curGameMap [(:y curLoc)] #(assoc % (:x curLoc) 1)))
-    (def newLoc (move curLoc newGameMap))
-    (if (not newLoc)
-      (println "no more legal moves"))
-    (if (or (not newLoc) (> iteration 100) (< (:y newLoc) 0) (< (:x newLoc) 0))
-      curGameMap
-      (recur (inc iteration) newLoc newGameMap))))
+    (let [newGameMap (update-in curGameMap [(:y curLoc)] #(assoc % (:x curLoc) 1))
+          newLoc (move curLoc newGameMap)]
+      (if (not newLoc)
+        (println "no more legal moves"))
+      (if (or (not newLoc) (> iteration 100) (< (:y newLoc) 0) (< (:x newLoc) 0))
+        curGameMap
+        (recur (inc iteration) newLoc newGameMap)))))

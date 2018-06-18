@@ -1,6 +1,8 @@
 (ns mapcreator.builder.core
-  (:require [mapcreator.builder.algorithms.randomfill.controller :as randomfill])
-  (:require [mapcreator.builder.algorithms.naive.controller :as naive]))
+  (:require [mapcreator.builder.algorithms.randomfill.controller :as randomfill]
+            [mapcreator.builder.algorithms.naive.controller :as naive]
+            [mapcreator.builder.algorithms.randomfill.a_star :as a_star]
+            [mapcreator.builder.shared.utils :as utils]))
 
 (defn blankGameMap
   [{:keys [x y] :as dimensions}]
@@ -9,12 +11,12 @@
 
 (defn createMap
   [{:keys [x y] :as dimensions}]
-  (def initialGameMap (blankGameMap dimensions))
-  ;; (naive/createPath
-  ;;  {:x (dec (:x dimensions)) :y (dec (:y dimensions))}
-  ;;  initialGameMap)
-  (def initialGameMap (blankGameMap dimensions))
-  (randomfill/createPath
-   {:x  0 :y 0}
-   {:x (dec (:x dimensions)) :y (dec (:y dimensions))}
-   initialGameMap))
+  (let [initialGameMap (blankGameMap dimensions)
+        ;; start {:x  0 :y 0}
+        ;; end {:x (dec (:x dimensions)) :y (dec (:y dimensions))}]
+        start {:x  2 :y 0}
+        end {:x (dec 6) :y (dec (:y dimensions))}]
+    (randomfill/createPath
+     start
+     end
+     initialGameMap)))

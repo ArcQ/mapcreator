@@ -54,3 +54,6 @@
 (defn updateElement [gameMap {:keys [x y]} newVal]
   (update-in gameMap [x y]
              (constantly newVal)))
+
+(defn pointMapToArr [point]
+  [(:x point) (:y point)])

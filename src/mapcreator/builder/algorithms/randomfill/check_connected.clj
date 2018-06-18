@@ -1,7 +1,7 @@
 (ns mapcreator.builder.algorithms.randomfill.check-connected
   (:require [mapcreator.builder.shared.utils :as utils])
   (:require [clojure.set :as set]))
-
+;; hashid is not needed actually, sets can deal with arrays
 (load "../directions")
 
 (defn isMapValZero [hashId]

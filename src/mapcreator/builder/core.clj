@@ -1,6 +1,5 @@
 (ns mapcreator.builder.core
   (:require [mapcreator.builder.algorithms.randomfill.controller :as randomfill]
-            [mapcreator.builder.algorithms.naive.controller :as naive]
             [mapcreator.builder.algorithms.randomfill.a_star :as a_star]
             [mapcreator.builder.shared.utils :as utils]))
 

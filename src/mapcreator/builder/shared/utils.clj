@@ -57,3 +57,37 @@
 
 (defn pointMapToArr [point]
   [(:x point) (:y point)])
+
+(defn getDivisionSize [gameMap k divisions]
+  (/ (k (getBounds gameMap)) (k divisions)))
+
+(defn getZoneRep
+  "split map into a specified even number of equal sized and find an list of points, no validation yet"
+  [gameMap divisions]
+  (letfn [(getOneDim [k]
+            (map
+             #(* % (getDivisionSize gameMap k divisions))
+             (range (k divisions))))]
+    (vec (map
+          (fn [yDim]
+            (vec (map
+                  (fn [xDim] (identity {:x xDim :y yDim}))
+                  (getOneDim :x))))
+          (getOneDim :y)))))
+
+(defn getBufferOffsetZone
+  "get the top left point(buffer) and the bot right point (offset)"
+  [gameMap divisions]
+  (letfn [(getBufferForK [k p]
+            (let [bounds (getBounds gameMap)
+                  divSize (getDivisionSize gameMap k divisions)]
+              (update p k #(- (k bounds) divSize %))))
+          (modifyBuffer [offsetP]
+                        (->> offsetP
+                             (getBufferForK :y)
+                             (getBufferForK :x)))]
+    (->> (getZoneRep gameMap divisions)
+         (apply concat)
+         (map #(identity {:offset %
+                          :buffer (modifyBuffer %)}))
+         (vec))))

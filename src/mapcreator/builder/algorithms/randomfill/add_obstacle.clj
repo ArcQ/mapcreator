@@ -1,8 +1,18 @@
 (ns mapcreator.builder.algorithms.randomfill.add-obstacle)
 
-(defn randomPoint [buffer gameMap]
-  {:y (rand-int (- (count gameMap) (:y buffer)))
-   :x (rand-int (- (count (gameMap 0)) (:x buffer)))})
+(defn randomPoint
+  "offset is for pushing the random point so that it will be within a certain quadrant"
+  [offset dimensions gameMap]
+  (randomPoint offset dimensions dimensions gameMap)
+  [offset buffer dimensions gameMap]
+
+  (letfn [(getPointDim [k dim]
+            (-> dim
+                (- (k buffer) (k offset))
+                (+ (k buffer))
+                (rand-int)))]
+    {:y (getPointDim :y (count gameMap))
+     :x (getPointDim :x (count (gameMap 0)))}))
 
 (defn makeObstacleVector [{xDim :x yDim :y :as dimensions}]
   (map
@@ -24,8 +34,7 @@
    gameMap))
 
 (defn addObstacle [gameMap {xDim :x yDim :y :as dimensions}]
-  (doall (->> gameMap
-              (randomPoint dimensions)
+  (doall (->> (randomPoint {:x 2 :y 2} dimensions gameMap)
               (addObstacleToGameMap gameMap dimensions))))
 
 (def testGameMapTwo [[0 0 0 0 0 0 0]
@@ -34,4 +43,9 @@
                      [0 0 0 0 0 0 0]
                      [0 0 0 0 0 0 0]])
 
-(print (addObstacle testGameMapTwo {:x 2 :y 3}))
+(defn getTestGameMapThree []
+  (doall (vec (repeat 27 (vec (doall (repeat 18 0)))))))
+
+;; (run! prn (addObstacle testGameMapTwo {:x 2 :y 3}))
+
+(run! prn (addObstacle (getTestGameMapThree) {:x 3 :y 3}))

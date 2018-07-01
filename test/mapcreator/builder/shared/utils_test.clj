@@ -66,3 +66,23 @@
 (deftest updateElement-test
   (testing "given a position and a newVal update correctly"
     (is (= testGameMapOneModified (utils/updateElement testGameMapOne {:x 1 :y 1} 1)))))
+
+(deftest getZoneRep-test
+  (testing "should get representative point for specified zone"
+    (is (= [[{:x 0 :y 0} {:x 2 :y 0} {:x 4 :y 0}]
+            [{:x 0 :y 3} {:x 2 :y 3} {:x 4 :y 3}]] (utils/getZoneRep testGameMapTwo {:x 3 :y 2})))))
+
+(deftest getBufferOffsetZone
+  (testing "should get a map of offset buffer for each point zone"
+    (is (= [{:offset {:x 0 :y 0}
+             :buffer {:x 4 :y 3}}
+            {:offset {:x 2 :y 0}
+             :buffer {:x 2 :y 3}}
+            {:offset {:x 4 :y 0}
+             :buffer {:x 0 :y 3}}
+            {:offset {:x 0 :y 3}
+             :buffer {:x 4 :y 0}}
+            {:offset {:x 2 :y 3}
+             :buffer {:x 2 :y 0}}
+            {:offset {:x 4 :y 3}
+             :buffer {:x 0 :y 0}}] (utils/getBufferOffsetZone testGameMapTwo {:x 3 :y 2})))))

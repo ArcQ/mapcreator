@@ -15,12 +15,11 @@
      {:y (getPointDim :y (count gameMap))
       :x (getPointDim :x (count (gameMap 0)))})))
 
-(defn makeObstacleVector [{xDim :x yDim :y :as dimensions}]
-  (map
-   (fn [yVal] (map #(vector %1 %2) (range xDim) (replicate 3 yVal)))
-   (range yDim)))
+(defn makeObstacleVector [{xDim :x yDim :y :as dimensions}] (map
+                                                             (fn [yVal] (map #(vector %1 %2) (range xDim) (replicate 3 yVal)))
+                                                             (range yDim)))
 
-(defn addObstacleToGameMap [gameMap {xDim :x yDim :y :as dimensions} {xPoint :x yPoint :y :as point}]
+(defn addObstacleToGameMap [gameMap {xDim :x yDim :y :as dimensions} typeCode {xPoint :x yPoint :y :as point}]
   (vec (map-indexed
         (fn [ydx row]
           (vec (map-indexed
@@ -29,10 +28,19 @@
                                     (< ydx (+ yPoint yDim))
                                     (>= xdx xPoint)
                                     (< xdx (+ xPoint xDim)))
-                                 1
+                                 typeCode
                                  (utils/getLocVal gameMap {:x xdx :y ydx})))
                 row)))
         gameMap)))
+
+(defn randomDimension [maxDim]
+  (->>
+   [:x :y]
+   (map #(vector % (+ 2 (rand-int maxDim))))
+   (flatten)
+   (apply hash-map)))
+
+;; test code
 
 (def testGameMapTwo [[0 0 0 0 0 0 0]
                      [0 0 0 0 0 0 0]
@@ -45,15 +53,24 @@
                (vec
                 (repeat 18 0)))))
 
-(run! prn
-      (let [dimensions {:x 3 :y 3}
-            gameMap (getTestGameMapThree)]
-        (doall (reduce
-                #(->> %1
-                      (randomPoint
-                       (:offset %2)
-                       (:buffer %2)
-                       dimensions)
-                      (addObstacleToGameMap %1 dimensions))
-                gameMap
-                (utils/getBufferOffsetZone gameMap {:x 4 :y 4})))))
+(defn addObstacles [gameMap typeCode maxDim zones]
+  (doall (reduce
+          #(let [dimensions (randomDimension maxDim)]
+             (->> %1
+                  (randomPoint
+                   (:offset %2)
+                   (:buffer %2)
+                   dimensions)
+                  (addObstacleToGameMap %1 dimensions typeCode)))
+          gameMap
+          (utils/getBufferOffsetZone gameMap zones))))
+
+(defn createInitialMap []
+  (-> (addObstacles (getTestGameMapThree) 1 4 {:x 3 :y 3})
+      (addObstacles 2 7 {:x 1 :y 1})
+      (addObstacles 3 5 {:x 2 :y 2})))
+
+;; (run! prn (-> (addObstacles (getTestGameMapThree) 1 4 {:x 3 :y 3})
+;;               (addObstacles 2 7 {:x 1 :y 1})
+;;               (addObstacles 3 5 {:x 2 :y 2})))
+

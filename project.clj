@@ -15,9 +15,13 @@
              :dev {:main user
                    :source-paths ["dev"]
                    :dependencies [
+                                  [org.clojure/data.json "0.2.6"]
+                                  [compojure "1.5.2"]
+                                  [ring/ring-core "1.5.0"]
+                                  [ring/ring-defaults "0.2.3"]
+                                  [ring/ring-jetty-adapter "1.5.0"]
                                   [org.clojure/tools.namespace "0.2.3"]
                                   [org.clojure/java.classpath "0.2.0"]
-                                  [org.clojure/data.priority-map "0.0.9"]
-                                  ]
+                                  [org.clojure/data.priority-map "0.0.9"]]
                    }
              })

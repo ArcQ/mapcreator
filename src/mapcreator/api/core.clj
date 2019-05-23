@@ -18,8 +18,8 @@
           (r/header "Access-Control-Expose-Headers" "Auth, Content-Type")))))
 
 (compojure/defroutes app
-  (compojure/GET "/gamemap/generate" []
-    {:body (json/write-str {:gameMap (addObstacle/createInitialMap)})
+  (compojure/GET "/gamemap/generate" [x y]
+    {:body (json/write-str {:gameMap (addObstacle/createInitialMap (Integer/parseInt x) (Integer/parseInt y))})
      :status 200
      :headers {"Content-Type" "text/plain"}}))
 

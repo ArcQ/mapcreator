@@ -48,10 +48,10 @@
                      [0 0 0 0 0 0 0]
                      [0 0 0 0 0 0 0]])
 
-(defn getTestGameMapThree []
-  (vec (repeat 28
+(defn getTestGameMapThree [x y]
+  (vec (repeat y
                (vec
-                (repeat 18 0)))))
+                (repeat x 0)))))
 
 (defn addObstacles [gameMap typeCode maxDim zones]
   (doall (reduce
@@ -65,8 +65,8 @@
           gameMap
           (utils/getBufferOffsetZone gameMap zones))))
 
-(defn createInitialMap []
-  (-> (addObstacles (getTestGameMapThree) 1 4 {:x 3 :y 3})
+(defn createInitialMap [x y]
+  (-> (addObstacles (getTestGameMapThree x y) 1 4 {:x 3 :y 3})
       (addObstacles 2 7 {:x 1 :y 1})
       (addObstacles 3 5 {:x 2 :y 2})))
 
